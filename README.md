@@ -4,6 +4,13 @@ Versão utilizando "CMake" do código feito na matéria de Computação Gráfica
 
 # Setup
 
+Foi utilizado as seguintes bibliotecas:
+- GLFW
+- GLM
+- GLEW
+
+Verifique como é a instalação para sua respectiva distribuição Linux
+
 Para fazer o setup, execute:
 ```bash
 cmake .
