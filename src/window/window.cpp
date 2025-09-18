@@ -38,8 +38,7 @@ int Window::initialize() {
 
   // GLEW
   glewExperimental = GL_TRUE;
-	glewInit();
-
+  
   if (glewInit() != GLEW_OK) {
     printf("GLEW não foi iniciado!\n");
     glfwDestroyWindow(mainWindow);
