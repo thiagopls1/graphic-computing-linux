@@ -1,0 +1,54 @@
+.vscode
+
+# Build directories
+build/
+CMakeFiles/
+_deps/
+
+# Execs and bins
+GraphicComputing
+test_fs_support_*
+*.exe
+*.out
+*.app
+
+# CMake generated files
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+*.cbp
+*.workspace
+
+# IDE specific files
+.vscode/
+.idea/
+*.sln
+*.vcxproj*
+*.user
+*.suo
+
+# Ccls cache
+.ccls-cache
+
+# Compile commands
+compile_commands.json
+
+# Compilation artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Dependency files
+*.d
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
