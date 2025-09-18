@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)  # FetchContent requer pelo menos 3.11, mas 3.14 é recomendado
+cmake_minimum_required(VERSION 3.11) # FetchContent requer pelo menos 3.11, mas 3.14 é recomendado
 project(GraphicComputing LANGUAGES CXX)
 
 # Address Sanitizer
@@ -29,6 +29,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glfw glm)
 
+# Tentei usar com o FetchContent, mas não funcionou bem
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
