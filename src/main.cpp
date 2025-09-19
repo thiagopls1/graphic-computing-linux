@@ -14,6 +14,7 @@
 
 std::vector<Mesh *> meshList;
 std::vector<Shader> shaderList;
+int n_triangles = 2; // Quantos triângulos serão criados
 
 static const char *fShader = "./shaders/fragment_shader.glsl";
 static const char *vShader = "./shaders/vertex_shader.glsl";
@@ -52,9 +53,11 @@ int main() {
     return 1;
   }
 
-  // Criar o Triangulo
-  CreateObjects();
-  CreateShaders();
+  // Criar N Triângulos
+  for (int i = 0; i < n_triangles; i++) {
+    CreateObjects();
+    CreateShaders();
+  }
 
   glm::mat4 projection = glm::perspective(
       45.0f, mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f,
@@ -73,26 +76,38 @@ int main() {
     /********************************
      * Piramide
      *********************************/
-    shaderList[0].UseShader(); // Usar o programa
 
-    // Movimenta��o da proje��o da camera
-    glUniformMatrix4fv(shaderList[0].GetProjectionLocation(), 1, GL_FALSE,
-                       glm::value_ptr(projection));
+    for (int i = 0; i < shaderList.size(); i++) {
+      // Usar o programa
+      shaderList[i].UseShader();
+      // Movimentação da projeção da camera
+      glUniformMatrix4fv(shaderList[i].GetProjectionLocation(), 1, GL_FALSE,
+                         glm::value_ptr(projection));
+    }
+
+    // cria uma matriz 4x4 e coloca os valores 1.0f em todas as posições
 
     // Piramide 1
-    glm::mat4 model(1.0f); // cria uma matriz 4x4 e coloca os valores 1.0f em
-                           // todas as posições
-    model = glm::translate(
-        model,
-        glm::vec3(
-            0.0, 0.0f,
-            -2.5f)); // traduz o modelo para movimentar a posição (x, y, z)
-    model = glm::scale(model, glm::vec3(0.4f, 0.4f, 1.0f));
-    // model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f,
-    // 0.0f));
+    glm::mat4 model_0(1.0f);
+    // traduz o modelo para movimentar a posição (x, y, z)
+    model_0 = glm::translate(model_0, glm::vec3(0.0f, 0.0f, -2.5f));
+    model_0 = glm::scale(model_0, glm::vec3(0.4f, 0.4f, 1.0f));
+    model_0 =
+        glm::rotate(model_0, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(shaderList[0].GetModelLocation(), 1, GL_FALSE,
-                       glm::value_ptr(model));
+                       glm::value_ptr(model_0));
     meshList[0]->RenderMesh();
+
+    // Piramide 2
+    glm::mat4 model_1(1.0f);
+    model_1 = glm::translate(model_1, glm::vec3(-0.0f, 0.0f, -2.5f));
+    model_1 = glm::scale(model_1, glm::vec3(0.4f, 0.4f, 1.0f));
+    model_1 =
+        glm::rotate(model_1, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    glUniformMatrix4fv(shaderList[1].GetModelLocation(), 1, GL_FALSE,
+                       glm::value_ptr(model_1));
+    meshList[1]->RenderMesh();
 
     glUseProgram(0); // Removo o Programa da memória
 
