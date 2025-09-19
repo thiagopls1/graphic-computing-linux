@@ -63,9 +63,19 @@ int main() {
       45.0f, mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f,
       100.0f);
 
+  float rotationMax = 360.0f;
+  float rotationIncrement = 1.0f;
+  float rotationAngle = 0.0f;
+
   while (!mainWindow.getShouldClose()) {
     // Ativa inputs e eventos da window
     glfwPollEvents();
+
+    if (rotationAngle < rotationMax) {
+      rotationAngle += rotationIncrement;
+    } else {
+      rotationAngle = 0.0f;
+    }
 
     /********************************
      * Cor de fundo da tela
@@ -92,8 +102,8 @@ int main() {
     // traduz o modelo para movimentar a posição (x, y, z)
     model_0 = glm::translate(model_0, glm::vec3(0.0f, 0.0f, -2.5f));
     model_0 = glm::scale(model_0, glm::vec3(0.4f, 0.4f, 1.0f));
-    model_0 =
-        glm::rotate(model_0, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model_0 = glm::rotate(model_0, glm::radians(90.0f + rotationAngle),
+                          glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(shaderList[0].GetModelLocation(), 1, GL_FALSE,
                        glm::value_ptr(model_0));
     meshList[0]->RenderMesh();
@@ -102,8 +112,8 @@ int main() {
     glm::mat4 model_1(1.0f);
     model_1 = glm::translate(model_1, glm::vec3(-0.0f, 0.0f, -2.5f));
     model_1 = glm::scale(model_1, glm::vec3(0.4f, 0.4f, 1.0f));
-    model_1 =
-        glm::rotate(model_1, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model_1 = glm::rotate(model_1, glm::radians(-90.0f + rotationAngle),
+                          glm::vec3(0.0f, 1.0f, 0.0f));
 
     glUniformMatrix4fv(shaderList[1].GetModelLocation(), 1, GL_FALSE,
                        glm::value_ptr(model_1));
