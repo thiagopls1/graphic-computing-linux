@@ -59,10 +59,12 @@ int main() {
     CreateShaders();
   }
 
+  // Projeção (Câmera)
   glm::mat4 projection = glm::perspective(
       45.0f, mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f,
       100.0f);
 
+  // Variáveis para rotacionar a pirâmide
   float rotationMax = 360.0f;
   float rotationIncrement = 1.0f;
   float rotationAngle = 0.0f;
@@ -95,23 +97,26 @@ int main() {
                          glm::value_ptr(projection));
     }
 
+    // Piramide lado 1
     // cria uma matriz 4x4 e coloca os valores 1.0f em todas as posições
-
-    // Piramide 1
     glm::mat4 model_0(1.0f);
     // traduz o modelo para movimentar a posição (x, y, z)
     model_0 = glm::translate(model_0, glm::vec3(0.0f, 0.0f, -2.5f));
     model_0 = glm::scale(model_0, glm::vec3(0.4f, 0.4f, 1.0f));
+
+    // Rotação lado 1
     model_0 = glm::rotate(model_0, glm::radians(90.0f + rotationAngle),
                           glm::vec3(0.0f, 1.0f, 0.0f));
     glUniformMatrix4fv(shaderList[0].GetModelLocation(), 1, GL_FALSE,
                        glm::value_ptr(model_0));
     meshList[0]->RenderMesh();
 
-    // Piramide 2
+    // Piramide lado 2
     glm::mat4 model_1(1.0f);
     model_1 = glm::translate(model_1, glm::vec3(-0.0f, 0.0f, -2.5f));
     model_1 = glm::scale(model_1, glm::vec3(0.4f, 0.4f, 1.0f));
+
+    // Rotação lado 2
     model_1 = glm::rotate(model_1, glm::radians(-90.0f + rotationAngle),
                           glm::vec3(0.0f, 1.0f, 0.0f));
 
