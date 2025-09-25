@@ -20,14 +20,14 @@ static const char *fShader = "./shaders/fragment_shader.glsl";
 static const char *vShader = "./shaders/vertex_shader.glsl";
 
 void CreateObjects() {
-  unsigned int indices[] = {
+  std::vector<unsigned int> indices = {
       0, 1, 2, // Frente
       0, 1, 3, // Lateral Direita
       0, 2, 3, // Lateral Esquerda
       3, 1, 2  // Base
   };
 
-  GLfloat vertices[] = {
+  std::vector<GLfloat> vertices = {
       0.0f,  1.0f,  0.0f, // Vertice 0 (x,y,z)
       1.0f,  -1.0f, 0.0f, // Vertice 1 (x,y,z)
       -1.0f, -1.0f, 0.0f, // Vertice 2 (x,y,z)
@@ -35,7 +35,8 @@ void CreateObjects() {
   };
 
   Mesh *obj1 = new Mesh();
-  obj1->CreateMesh(vertices, indices, sizeof(vertices), sizeof(indices));
+  obj1->CreateMesh(vertices.data(), indices.data(), vertices.size(),
+                   vertices.size());
   meshList.push_back(obj1);
 }
 
