@@ -35,8 +35,9 @@ find_package(OpenGL REQUIRED)
 
 # LINKAGEM DAS LIBS & ARQUIVOS
 
-file(GLOB_RECURSE source "src/*.h" "src/*.cpp")
+file(GLOB_RECURSE source "src/*.h"  "src/*.hpp" "src/*.cpp")
 file(COPY shaders DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY textures DESTINATION ${CMAKE_BINARY_DIR})
 
 add_executable(GraphicComputing ${source})
 

@@ -1,11 +1,12 @@
 #version 330
 
 in vec4 vCol;
-
-uniform vec3 triangleColor;
+in vec2 TexCoord;
 
 out vec4 color;
 
-void main() {
-	color = vCol;
+uniform sampler2D theTexture;
+
+void main(){
+	color =  texture(theTexture, TexCoord);
 }

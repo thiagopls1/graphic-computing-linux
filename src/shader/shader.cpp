@@ -6,46 +6,58 @@ Shader::Shader() {
   uniformProjection = 0;
 }
 
+Shader::~Shader() {
+  if (shaderID != 0) {
+    glDeleteProgram(shaderID);
+    shaderID = 0;
+  }
+  uniformModel = 0;
+  uniformProjection = 0;
+}
+
+void Shader::UseProgram() { glUseProgram(shaderID); }
+
 void Shader::CreateFromString(const char *vertexCode,
                               const char *fragmentCode) {
   CompileShader(vertexCode, fragmentCode);
 }
 
-void Shader::CreateFromFiles(const char *vertexLocation,
-                             const char *fragmentLocation) {
-  std::string vertexString = ReadFile(vertexLocation);
-  std::string fragmentString = ReadFile(fragmentLocation);
+void Shader::CreateFromFile(const char *vertexLocation,
+                            const char *fragmentLocation) {
+  std::string vertexString =
+      ReadFile(vertexLocation); // recebe os valores do arquivo
+  std::string fragmentString =
+      ReadFile(fragmentLocation); // recebe os valores do arquivo
 
-  const char *vertexCode = vertexString.c_str();
-  const char *fragmentCode = fragmentString.c_str();
+  const char *vertexCode = vertexString.c_str(); // converte string para char
+  const char *fragmentCode = fragmentString.c_str(); // convert string para char
 
-  CompileShader(vertexCode, fragmentCode);
+  CompileShader(vertexCode, fragmentCode); // executa a compilação do código
 }
 
 std::string Shader::ReadFile(const char *fileLocation) {
-  std::string content;
-  std::ifstream fileStrem(fileLocation, std::ios::in);
+  std::string content = "";                            // variável de retorno
+  std::ifstream fileStrem(fileLocation, std::ios::in); // abre o arquivo
 
-  if (!fileStrem.is_open()) {
-    printf("Erro ao tentar abrir o arquivo %s\n", fileLocation);
+  if (!fileStrem.is_open()) { // se o arquivo não estiver aberto
+    printf("Erro ao tentar abrir o arquivo %s", fileLocation);
     return "";
   }
 
-  std::string line = "";
-  while (!fileStrem.eof()) {
-    std::getline(fileStrem, line);
-    content.append(line + "\n");
+  std::string line;                // define uma linha
+  while (!fileStrem.eof()) {       // roda até o final do arquivo (End of File)
+    std::getline(fileStrem, line); // adiciona a linha na variável
+    content.append(line + '\n');   // adiciona a variável no retorno
   }
-
-  fileStrem.close();
-  return content;
+  fileStrem.close(); // fecha o arquivo
+  return content;    // retorna o conteúdo
 }
 
 void Shader::CompileShader(const char *vertexCode, const char *fragmentCode) {
   // 1. Criar um programa
   shaderID = glCreateProgram(); // Inicia o programa
   if (!shaderID) {
-    printf("Erro ao criar o programa\n");
+    printf("Erro ao criar o programa");
     return;
   }
 
@@ -65,7 +77,7 @@ void Shader::CompileShader(const char *vertexCode, const char *fragmentCode) {
   if (!result) {
     GLchar log[1024] = {0};
     glGetProgramInfoLog(shaderID, sizeof(log), NULL,
-                        log); // Busca o texto caso de algum erro na compila��o
+                        log); // Busca o texto caso de algum erro na compilação
     printf("Erro ao linkar o programa: '%s'\n", log);
     return;
   }
@@ -84,10 +96,12 @@ void Shader::CompileShader(const char *vertexCode, const char *fragmentCode) {
     return;
   }
 
-  uniformModel = glGetUniformLocation(
-      shaderID, "model"); // Procura a entrada chamada model
   uniformProjection = glGetUniformLocation(
       shaderID, "projection"); // Procura a entrada chamada projection
+  uniformModel = glGetUniformLocation(
+      shaderID, "model"); // Procura a entrada chamada model
+  uniformView =
+      glGetUniformLocation(shaderID, "view"); // Procura a entrada chamada view
 }
 
 void Shader::AddShader(GLenum shaderType, const char *shaderCode) {
@@ -125,20 +139,3 @@ void Shader::AddShader(GLenum shaderType, const char *shaderCode) {
   glAttachShader(shaderID, shader); // Anexa shader ao programa "variável
                                     // global"
 }
-
-void Shader::UseShader() { glUseProgram(shaderID); }
-
-void Shader::ClearShader() {
-  if (shaderID != 0) {
-    glDeleteProgram(shaderID);
-    shaderID = 0;
-  }
-  uniformModel = 0;
-  uniformProjection = 0;
-}
-
-Shader::~Shader() { ClearShader(); }
-
-GLuint Shader::GetProjectionLocation() { return uniformProjection; }
-
-GLuint Shader::GetModelLocation() { return uniformModel; }
